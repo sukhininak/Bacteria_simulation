@@ -13,7 +13,7 @@
 
 
 int main() {
-  sf::RenderWindow window(sf::VideoMode(800, 600), "Ray casting");
+  sf::RenderWindow window(sf::VideoMode(800, 600), "Simulation");
   window.setVerticalSyncEnabled(true);
   ImGui::SFML::Init(window);
 
