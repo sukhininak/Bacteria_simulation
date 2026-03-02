@@ -7,7 +7,7 @@ add_subdirectory(dependencies)
 
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp ${PROJECT_SOURCE_DIR}/src/*.h)
 
-# add_library(sources STATIC ${SOURCES} canvas.cpp canvas.h)
+add_library(sources STATIC ${SOURCES} simulator.cpp simulator.h)
 set_target_properties(sources PROPERTIES CXX_STANDARD 23)
 target_link_libraries(sources PUBLIC ImGui-SFML::ImGui-SFML)
 

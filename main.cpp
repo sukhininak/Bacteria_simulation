@@ -44,8 +44,6 @@ int main() {
     ImGui::SetWindowFontScale(2.0f);
     ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
 
-    ray_caster.UpdateUI();
-
     window.clear();
     window.draw(sprite);
     ImGui::SFML::Render(window);
