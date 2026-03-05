@@ -14,12 +14,12 @@ struct Gene{
 class Bacteria{
 public:
     Bacteria();
-    std::vector<Bacterium> GetBacteria();
+    // std::vector<Bacterium> GetBacteria();
     int GetNumberAlive();
     void Mutate();
 
 private:
-    std::vector<Bacterium> bacteria;
+    // std::vector<Bacterium> bacteria;
 };
 
 class Bacterium{

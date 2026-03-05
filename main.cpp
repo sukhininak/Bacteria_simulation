@@ -38,20 +38,20 @@ int main() {
   //   Simulator.Process();
   //   Visual.Show();
 
-  Bacteria bacteria;
-  Field field;
+  // Bacteria bacteria;
+  // Field field;
 
-  for (int i = 0; i < 1000; i++){
+  // for (int i = 0; i < 1000; i++){
 
-      while (bacteria.GetNumberAlive() > 0){
-          for (Bacterium bacterium : bacteria.GetBacteria()){
-              FieldUpdate result = bacterium.DoStep();
-              field.Update(result);
-          };
-      }
+  //     // while (bacteria.GetNumberAlive() > 0){
+  //     //     for (Bacterium bacterium : bacteria.GetBacteria()){
+  //     //         FieldUpdate result = bacterium.DoStep();
+  //     //         field.Update(result);
+  //     //     };
+  //     // }
 
-      bacteria.Mutate();
-  }
+  //     bacteria.Mutate();
+  // }
     
 
   sf::Clock deltaClock;
