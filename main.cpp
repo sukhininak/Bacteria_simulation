@@ -52,7 +52,6 @@ int main() {
 
       bacteria.Mutate();
   }
-    
 
   sf::Clock deltaClock;
   while (window.isOpen()) {
