@@ -11,6 +11,10 @@
 #include <mutex>
 #include <vector>
 
+#include "src/bacteria.h"
+#include "src/field.h"
+#include "simulator.h"
+
 
 int main() {
   sf::RenderWindow window(sf::VideoMode(800, 600), "Simulation");
@@ -29,6 +33,27 @@ int main() {
     texture.update(reinterpret_cast<uint8_t *>(pixels.data()));
   };
 
+  //   создать симулятор?
+
+  //   Simulator.Process();
+  //   Visual.Show();
+
+  Bacteria bacteria;
+  Field field;
+
+  for (int i = 0; i < 1000; i++){
+
+      while (bacteria.GetNumberAlive() > 0){
+          for (Bacterium bacterium : bacteria.GetBacteria()){
+              FieldUpdate result = bacterium.DoStep();
+              field.Update(result);
+          };
+      }
+
+      bacteria.Mutate();
+  }
+    
+
   sf::Clock deltaClock;
   while (window.isOpen()) {
     sf::Event event;
@@ -43,6 +68,8 @@ int main() {
     ImGui::SFML::Update(window, deltaClock.restart());
     ImGui::SetWindowFontScale(2.0f);
     ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
+
+    // Visual.UpdateUI();
 
     window.clear();
     window.draw(sprite);
