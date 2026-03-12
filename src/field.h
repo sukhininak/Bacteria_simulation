@@ -1,9 +1,26 @@
 # pragma once
 #include <iostream>
 #include <vector>
+#include <variant>
+//#include "bacteria.h"
+struct Bacteria {};
 
-struct FieldUpdate{
-    //какая еда съедена где умер жук 
+struct FieldCell {
+  FieldCell() = default;
+
+  template <typename V>
+  FieldCell(V&& v) : data(std::move(v)) {}
+
+  int GetCode() const {
+    if (std::holds_alternative<std::monostate>(data)) {
+      return 0;
+    }else if (std::holds_alternative<Bacteria>(data)) {
+      return 1;
+    }
+    throw "unknown";
+  }
+
+  std::variant<std::monostate, Bacteria> data;
 };
 
 class Field{
@@ -16,21 +33,11 @@ public:
   void add_bac(int x, int y);
 
   void delete_bac(int x, int y);
-  void move(int x_past, int y_past, int x, int y); //перемещение бактерии из точки (x_past y_past) в точку (x y)
- 
-  
-  void relative_move(int x_past, int y_past, int dx, int dy); //перемещение бактерии из точки (x_past y_past) в точку (x_past+dx y_past+dy)
- 
-
-  void symbol_plot();  // поле символами в терминале
-  
+  Bacteria get_bac(int x, int y);
 
   void Update(FieldUpdate res);
   
   private:
-  int Nx;
-  int Ny;
-
-  std::vector <bool> matrix_field;
+  std::vector<std::vector<FieldCell>> matrix_field;
     
 };
