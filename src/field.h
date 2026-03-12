@@ -35,8 +35,6 @@ public:
   void delete_bac(int x, int y);
   Bacteria get_bac(int x, int y);
 
-  void Update(FieldUpdate res);
-  
   private:
   std::vector<std::vector<FieldCell>> matrix_field;
     
