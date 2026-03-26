@@ -11,9 +11,14 @@
 #include <mutex>
 #include <vector>
 
-#include "render.h"
+#include "./src/Render.h"
 
 int main() {
-  Render R;
+  Field f(256,256);
+  f.add_bac(10,10);
+  f.add_bac(11,11);
+  f.add_bac(12,12);
+  
+  Render r(f);
   return 0;
 }

@@ -13,5 +13,7 @@
 #include <mutex>
 
 class Render{
-    Render(Field field);
-}
+    public:
+    Render( const Field  &field);
+    private: const Field &field;
+};

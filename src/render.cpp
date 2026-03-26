@@ -1,9 +1,9 @@
-#include "render.h"
+#include "Render.h"
 
-Render::Render(){ const int W = 256;
-    const int H = 256;
-
-    sf::RenderWindow window(sf::VideoMode(W, H), "256x256");
+Render::Render(const Field &field):field(field) { 
+    const int W = field.get_size_W();
+    const int H = field.get_size_H();
+    sf::RenderWindow window(sf::VideoMode(W, H), "Simulation");
 
     sf::Image image;
     image.create(W, H, sf::Color::White);
@@ -13,10 +13,10 @@ Render::Render(){ const int W = 256;
     {
         for (int x = 0; x < W; x++)
         {
-            if ((x + y) % 2 == 0)
-                image.setPixel(x, y, sf::Color::White);
-            else
+            if (std::holds_alternative<Bacteria>(field.get_cell(x,y).data))
                 image.setPixel(x, y, sf::Color::Black);
+            else
+                image.setPixel(x, y, sf::Color::White);
         }
     }
 
