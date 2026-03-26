@@ -31,9 +31,11 @@ public:
   ~Field();
 
   void add_bac(int x, int y);
-
+  int get_size_W() const;
+  int get_size_H() const;
   void delete_bac(int x, int y);
-  Bacteria get_bac(int x, int y);
+  Bacteria get_bac(int x, int y) const;
+  FieldCell get_cell(int x, int y) const;
 
   private:
   std::vector<std::vector<FieldCell>> matrix_field;
