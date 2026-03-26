@@ -13,7 +13,19 @@
 #include <mutex>
 
 class Render{
+    
     public:
     Render( const Field  &field);
-    private: const Field &field;
+    void update();
+    bool is_open() const;
+    void draw();
+    bool process_events(sf::Event& event);
+
+    private: 
+    const Field &field;
+
+    sf::RenderWindow window;
+    sf::Image image;
+    sf::Texture texture;
+    sf::Sprite sprite;
 };

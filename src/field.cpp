@@ -11,7 +11,7 @@ Field::Field(int Nx, int Ny)
 Field::~Field(){};
 
 void Field::add_bac(int x, int y)
-{
+{ 
   if (x < matrix_field.size() && y < matrix_field[x].size())
     matrix_field[x][y] = Bacteria{};
   else

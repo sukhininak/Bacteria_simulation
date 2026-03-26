@@ -13,12 +13,25 @@
 
 #include "./src/Render.h"
 
-int main() {
-  Field f(256,256);
-  f.add_bac(10,10);
-  f.add_bac(11,11);
-  f.add_bac(12,12);
-  
-  Render r(f);
-  return 0;
-}
+  int main() {
+    Field f(256,256);    
+    Render r(f);
+    sf::Event event;
+
+
+
+   
+    while (r.is_open()) {
+        r.process_events(event);
+        if (event.type == sf::Event::KeyPressed &&
+            event.key.code == sf::Keyboard::Space)
+        {
+        f.add_bac(rand()%f.get_size_W(),
+                  rand()%f.get_size_H());
+        }
+        
+        r.update();
+        r.draw();
+    }
+    return 0;
+  }
