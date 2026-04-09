@@ -2,8 +2,9 @@
 #include <iostream>
 #include <vector>
 #include <variant>
-//#include "bacteria.h"
-struct Bacteria {};
+#include "bacteria.h"
+
+
 
 struct FieldCell {
   FieldCell() = default;
@@ -14,13 +15,22 @@ struct FieldCell {
   int GetCode() const {
     if (std::holds_alternative<std::monostate>(data)) {
       return 0;
-    }else if (std::holds_alternative<Bacteria>(data)) {
+    }else if (std::holds_alternative<Bacterium>(data)) {
       return 1;
     }
     throw "unknown";
   }
 
-  std::variant<std::monostate, Bacteria> data;
+  bool IsEmpty() const {
+    return GetCode()  == 0;
+  }
+  
+  template<typename V>
+  V* as() {
+    return std::get_if<V>(&data);
+  }
+
+  std::variant<std::monostate, Bacterium> data;
 };
 
 class Field{
@@ -30,12 +40,12 @@ public:
   
   ~Field();
 
-  void add_bac(int x, int y);
+  void add_bac(int x, int y, size_t id);
   int get_size_W() const;
   int get_size_H() const;
   void delete_bac(int x, int y);
-  Bacteria get_bac(int x, int y) const;
-  FieldCell get_cell(int x, int y) const;
+  const FieldCell& get_cell(int x, int y) const;
+  FieldCell& get_cell(int x, int y);
 
   private:
   std::vector<std::vector<FieldCell>> matrix_field;

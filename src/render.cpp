@@ -12,7 +12,7 @@ window(sf::VideoMode(field.get_size_W(), field.get_size_H()), "Simulation")
     {
         for (int x = 0; x < field.get_size_H(); x++)
         {
-            if (std::holds_alternative<Bacteria>(field.get_cell(x,y).data))
+            if (std::holds_alternative<Bacterium>(field.get_cell(x,y).data))
                 image.setPixel(x, y, sf::Color::Black);
             else
                 image.setPixel(x, y, sf::Color::White);
@@ -31,7 +31,7 @@ void Render::update(){
     {
         for (int x = 0; x < W; x++)
         {
-            if (std::holds_alternative<Bacteria>(field.get_cell(x,y).data))
+            if (std::holds_alternative<Bacterium>(field.get_cell(x,y).data))
                 image.setPixel(x, y, sf::Color::Black);
             else
                 image.setPixel(x, y, sf::Color::White);

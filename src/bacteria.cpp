@@ -9,9 +9,8 @@
 Gene::Gene(size_t size){
     std::vector<unsigned int> vec(size);
     // Инициализация генератора случайных чисел
-    std::srand(static_cast<unsigned>(std::time(nullptr)));
     for (size_t i = 0; i < size; ++i) {
-        vec[i] = std::rand() % (size + 1);  // числа от 0 до maxValue
+        vec[i] = std::rand() % (8);  // числа от 0 до maxValue
     }
 
     gene = vec;
@@ -32,8 +31,8 @@ void Gene::SetGene(unsigned int position, unsigned int number){
     gene[position % (size(gene))] = number;
 };
 
-std::vector<unsigned int>* Gene::GetGene(){
-    return &gene;
+const std::vector<unsigned int>& Gene::GetGene() const {
+    return gene;
 };
 
 Group::Group(size_t size){
@@ -58,11 +57,9 @@ unsigned int Group::GetNumberAlive(){
     return alive;
 };
 
-
 Bacterium::Bacterium(size_t id){
-    BacteriumState bs;
-
-    bs.energy = 20;
+     BacteriumState bs;
+        bs.energy = 20;
     bs.positionGene = 0;
 
     // std::srand(static_cast<unsigned>(std::time(nullptr)));
@@ -75,15 +72,38 @@ Bacterium::Bacterium(size_t id){
 
     state = bs;
 
-    gene = Gene(20);
+    gene = Gene(1000);
+
+    ID = id;
+    };
+Bacterium::Bacterium(int x, int y, size_t id){
+    BacteriumState bs;
+
+    bs.energy = 20;
+    bs.positionGene = 0;
+
+    // std::srand(static_cast<unsigned>(std::time(nullptr)));
+
+    // bs.x = std::rand() % (size);
+    // bs.y = std::rand() % (size);
+
+    bs.x = x;
+    bs.y = y;
+
+    state = bs;
+
+    gene = Gene(1000);
 
     ID = id;
 };
 
-BacteriumState* Bacterium::GetState(){
-    return &state;
+BacteriumState & Bacterium::GetState(){
+    return state;
 };
 
 const Gene* Bacterium::GetGene() const{
     return  &gene;
+};
+size_t Bacterium::GetID(){
+    return ID;
 };
