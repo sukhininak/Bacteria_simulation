@@ -1,5 +1,10 @@
-cmake_minimum_required(VERSION 3.20)
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS ON)
+set(CMAKE_WARN_DEPRECATED OFF)
+
+cmake_minimum_required(VERSION 4.1)
 project(Bacteria_simulation LANGUAGES CXX VERSION 1.0)
+
 
 set(BUILD_SHARED_LIBS OFF)
 
