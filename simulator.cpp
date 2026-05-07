@@ -1,5 +1,8 @@
 #include "simulator.h"
-
+bool Photosyntesys::Exec(Context& ctx) {
+    ctx.bacterium->GetState().energy += 1;
+    return true;
+}
 bool Move::Exec(Context& ctx) {
     const Gene* gene = ctx.bacterium->GetGene();
     const unsigned gene_pos = ctx.bacterium->GetState().positionGene;
@@ -32,6 +35,7 @@ bool Move::Exec(Context& ctx) {
         case 5:
           new_y ++;
           new_x --;
+          break;
         case 6:
           new_x --;
           break;
@@ -40,13 +44,20 @@ bool Move::Exec(Context& ctx) {
           new_y --;
           break;
     }
-if(new_x < ctx.field->get_size_W() && new_y < ctx.field->get_size_H() && new_x >= 0 && new_y >= 0)
-    if (ctx.field->get_cell(new_x, new_y).IsEmpty()) {
-           ctx.field->add_bac(new_x, new_y, ctx.bacterium->GetID());
+if(new_x < ctx.field->get_size_W() && new_y < ctx.field->get_size_H() && new_x >= 0 && new_y >= 0 && ctx.field->get_cell(new_x, new_y).IsEmpty()) {
+        ctx.bacterium->GetState().energy -= 2;
+        if(ctx.bacterium->GetState().energy <= 0) {
+            ctx.field->delete_bac(ctx.bacterium->GetState().x, ctx.bacterium->GetState().y);
+            return false;
+        }   
+
         ctx.field->delete_bac(ctx.bacterium->GetState().x, ctx.bacterium->GetState().y);
+        ctx.bacterium->GetState().x = new_x;
+        ctx.bacterium->GetState().y = new_y;
+       
+        ctx.field->add_bac(ctx.bacterium, ctx.bacterium->GetID());
         return true;
     }
-
     return false;
 }
 
@@ -63,6 +74,7 @@ void Simulator::SimulateStep() {
             if (cell.GetCode() == 1) {
                 bacteries.push_back(cell.as<Bacterium>());
             }
+            
         }
     }
 
@@ -70,7 +82,9 @@ void Simulator::SimulateStep() {
         if(bac->GetGene()->GetGene()[step] == 5) {
             Context ctx{field, bac};
             Move move;
+            Photosyntesys photosyntesys;
             move.Exec(ctx);
+            photosyntesys.Exec(ctx);
         }
     }
 }

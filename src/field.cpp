@@ -10,6 +10,14 @@ Field::Field(int Nx, int Ny)
 
 Field::~Field(){};
 
+void Field::add_bac(Bacterium *bac, size_t id)
+{ 
+  if (bac->GetState().x < matrix_field.size() && bac->GetState().y < matrix_field[bac->GetState().x].size())
+    matrix_field[bac->GetState().x][bac->GetState().y] = Bacterium(bac, bac->GetID());
+  else
+    std::cout << "incorrect number of line or rows" << std::endl;
+}
+
 void Field::add_bac(int x, int y, size_t id)
 { 
   if (x < matrix_field.size() && y < matrix_field[x].size())

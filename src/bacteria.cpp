@@ -4,9 +4,12 @@
 // #include <vector>
 // #include <cstdlib>
 #include <ctime>
-
-
-Gene::Gene(size_t size){
+Gene::Gene(Gene *gene)
+{
+        this->gene = gene->gene;
+    };
+Gene::Gene(){
+    size_t size = 5000;
     std::vector<unsigned int> vec(size);
     // Инициализация генератора случайных чисел
     for (size_t i = 0; i < size; ++i) {
@@ -56,43 +59,43 @@ void Group::UpdateNumberAlive(size_t delta){
 unsigned int Group::GetNumberAlive(){
     return alive;
 };
-
+Bacterium::Bacterium(Bacterium *bac, size_t id){
+ this->state.energy = bac->state.energy;
+    this->state.positionGene = bac->state.positionGene;
+    this->state.x = bac->state.x;
+    this->state.y = bac->state.y;
+    //this->gene = Gene(bac->gene); /////////////////////////////////////////Надо поравить почему-то не работает
+    this->ID = id;
+};
 Bacterium::Bacterium(size_t id){
-     BacteriumState bs;
-        bs.energy = 20;
-    bs.positionGene = 0;
+    state.energy = 20;
+    state.positionGene = 0;
 
     // std::srand(static_cast<unsigned>(std::time(nullptr)));
 
     // bs.x = std::rand() % (size);
     // bs.y = std::rand() % (size);
 
-    bs.x = 0;
-    bs.y = 0;
+    state.x = 0;
+    state.y = 0;
 
-    state = bs;
-
-    gene = Gene(1000);
-
+    gene = Gene();
+    
     ID = id;
     };
 Bacterium::Bacterium(int x, int y, size_t id){
-    BacteriumState bs;
-
-    bs.energy = 20;
-    bs.positionGene = 0;
+    state.energy = 20;
+    state.positionGene = 0;
 
     // std::srand(static_cast<unsigned>(std::time(nullptr)));
 
     // bs.x = std::rand() % (size);
     // bs.y = std::rand() % (size);
 
-    bs.x = x;
-    bs.y = y;
+    state.x = x;
+    state.y = y;
 
-    state = bs;
-
-    gene = Gene(1000);
+    gene = Gene();
 
     ID = id;
 };

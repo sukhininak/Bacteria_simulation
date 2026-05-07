@@ -29,8 +29,9 @@ class Move: public Command {
     bool Exec(Context& ctx) override;// обновляет поле
 };
 
-class Look: public Command {
-    Look();
+class Photosyntesys: public Command {
+    public:
+    Photosyntesys() = default;
     bool Exec(Context& ctx) override;// обновляет поле
 };
 

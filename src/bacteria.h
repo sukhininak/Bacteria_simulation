@@ -3,9 +3,8 @@
 
 class Gene{
 public:
-    Gene() = default;
-    Gene(size_t size);
-
+    Gene();
+    Gene(Gene *gene);
     void Mutate();
 
     void ClearGene();
@@ -26,8 +25,9 @@ struct BacteriumState{
 
 class Bacterium{
 public:
-    Bacterium(int x, int y,size_t id);// бактерия родилась на поле или мы новую бактерию садим в клетку
+    Bacterium(int x, int y, size_t id);// бактерия родилась на поле или мы новую бактерию садим в клетку
     Bacterium(size_t id);
+    Bacterium(Bacterium *bac,  size_t id);
     Bacterium()= default;
     //virtual machine
 

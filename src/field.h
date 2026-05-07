@@ -40,7 +40,9 @@ public:
   
   ~Field();
 
+  void add_bac(Bacterium *bac, size_t id);
   void add_bac(int x, int y, size_t id);
+
   int get_size_W() const;
   int get_size_H() const;
   void delete_bac(int x, int y);
