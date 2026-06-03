@@ -1,112 +1,52 @@
 #include "bacteria.h"
 
-// #include <iostream>
-// #include <vector>
-// #include <cstdlib>
-#include <ctime>
-Gene::Gene(Gene *gene)
-{
-        this->gene = gene->gene;
-    };
-Gene::Gene(){
-    size_t size = 5000;
-    std::vector<unsigned int> vec(size);
-    // Инициализация генератора случайных чисел
-    for (size_t i = 0; i < size; ++i) {
-        vec[i] = std::rand() % (8);  // числа от 0 до maxValue
+static std::mt19937& getGlobalRNG() {
+    static std::mt19937 rng(std::random_device{}());
+    return rng;
+}
+
+
+Gene::Gene() {
+    gene.resize(GENE_SIZE);
+    std::uniform_int_distribution<unsigned int> dist(0, NUM_VALUES - 1);
+    auto& rng = getGlobalRNG();
+    for (size_t i = 0; i < GENE_SIZE; ++i) {
+        gene[i] = dist(rng);
     }
+}
 
-    gene = vec;
-};
-
-void Gene::Mutate(){
-    std::srand(static_cast<unsigned>(std::time(nullptr)));
-    gene[std::rand() % (size(gene))] = std::rand() % (size(gene) + 1); 
-};
-
-void Gene::ClearGene(){
-    for (size_t i = 0; i < size(gene); ++i) {
-        gene[i] = 0;
-    }
-};
-
-void Gene::SetGene(unsigned int position, unsigned int number){
-    gene[position % (size(gene))] = number;
-};
+void Gene::Mutate(std::mt19937& rng) {
+    std::uniform_int_distribution<size_t> posDist(0, gene.size() - 1);
+    std::uniform_int_distribution<unsigned int> valDist(0, NUM_VALUES - 1);
+    gene[posDist(rng)] = valDist(rng);
+}
 
 const std::vector<unsigned int>& Gene::GetGene() const {
     return gene;
-};
+}
 
-Group::Group(size_t size){
-    std::vector<Bacterium> vec(size);
+unsigned int Gene::GetCommand(unsigned int pos) const {
+    return gene[pos % gene.size()];
+}
 
-    for (size_t i = 0; i < size; ++i) { // group info - информация о длине генома, начальной энергии
-        vec[i] = Bacterium(i);
-    }
-
-    group = vec;
-};
-
-Bacterium* Group::GetBacterium(size_t id){
-    return &group[id];
-};
-
-void Group::UpdateNumberAlive(size_t delta){
-    alive += delta;
-};
-
-unsigned int Group::GetNumberAlive(){
-    return alive;
-};
-Bacterium::Bacterium(Bacterium *bac, size_t id){
- this->state.energy = bac->state.energy;
-    this->state.positionGene = bac->state.positionGene;
-    this->state.x = bac->state.x;
-    this->state.y = bac->state.y;
-    //this->gene = Gene(bac->gene); /////////////////////////////////////////Надо поравить почему-то не работает
-    this->ID = id;
-};
-Bacterium::Bacterium(size_t id){
-    state.energy = 20;
-    state.positionGene = 0;
-
-    // std::srand(static_cast<unsigned>(std::time(nullptr)));
-
-    // bs.x = std::rand() % (size);
-    // bs.y = std::rand() % (size);
-
-    state.x = 0;
-    state.y = 0;
-
-    gene = Gene();
-    
-    ID = id;
-    };
-Bacterium::Bacterium(int x, int y, size_t id){
-    state.energy = 20;
-    state.positionGene = 0;
-
-    // std::srand(static_cast<unsigned>(std::time(nullptr)));
-
-    // bs.x = std::rand() % (size);
-    // bs.y = std::rand() % (size);
-
+Bacterium::Bacterium(int x, int y, size_t id, BacteriumType type, int bSize)
+    : ID(id), type(type)
+{
     state.x = x;
     state.y = y;
-
+    state.energy = 200;
+    state.positionGene = 0;
+    state.bacteriumSize = bSize;
     gene = Gene();
+}
 
-    ID = id;
-};
+BacteriumState& Bacterium::GetState() { return state; }
+const BacteriumState& Bacterium::GetState() const { return state; }
+const Gene* Bacterium::GetGene() const { return &gene; }
+Gene* Bacterium::GetGeneMut() { return &gene; }
+size_t Bacterium::GetID() const { return ID; }
+BacteriumType Bacterium::GetType() const { return type; }
 
-BacteriumState & Bacterium::GetState(){
-    return state;
-};
-
-const Gene* Bacterium::GetGene() const{
-    return  &gene;
-};
-size_t Bacterium::GetID(){
-    return ID;
-};
+void Bacterium::AdvanceGene() {
+    state.positionGene = (state.positionGene + 1) % gene.GetSize();
+}

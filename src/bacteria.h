@@ -1,55 +1,55 @@
 #pragma once
 #include <vector>
+#include <random>
 
-class Gene{
+enum class BacteriumType {
+    PHOTOSYNTHESIZER = 0, 
+    PREDATOR = 1         
+};
+
+class Gene {
 public:
     Gene();
-    Gene(Gene *gene);
-    void Mutate();
+    Gene(const Gene& other) = default;
+    Gene& operator=(const Gene& other) = default;
 
-    void ClearGene();
-    void SetGene(unsigned int position, unsigned int number);
-
+    void Mutate(std::mt19937& rng);
     const std::vector<unsigned int>& GetGene() const;
+    unsigned int GetCommand(unsigned int pos) const;
+    unsigned int GetSize() const { return static_cast<unsigned int>(gene.size()); }
 
 private:
     std::vector<unsigned int> gene;
+    static constexpr size_t GENE_SIZE = 64;
+    static constexpr unsigned int NUM_VALUES = 8;
 };
 
-struct BacteriumState{
-    int energy;
-    unsigned int positionGene;
-    unsigned int x;
-    unsigned int y;
+struct BacteriumState {
+    int energy = 20;
+    unsigned int positionGene = 0;
+    int x = 0;
+    int y = 0;
+    int bacteriumSize = 1; 
 };
 
-class Bacterium{
+class Bacterium {
 public:
-    Bacterium(int x, int y, size_t id);// бактерия родилась на поле или мы новую бактерию садим в клетку
-    Bacterium(size_t id);
-    Bacterium(Bacterium *bac,  size_t id);
-    Bacterium()= default;
-    //virtual machine
+    Bacterium() = default;
+    Bacterium(int x, int y, size_t id, BacteriumType type, int bSize = 1);
+    Bacterium(const Bacterium& other) = default;
+    Bacterium& operator=(const Bacterium& other) = default;
 
-    BacteriumState &GetState();
-    const Gene* GetGene() const; //const? нельзя менять ген
-    size_t GetID();
+    BacteriumState& GetState();
+    const BacteriumState& GetState() const;
+    const Gene* GetGene() const;
+    Gene* GetGeneMut();
+    size_t GetID() const;
+    BacteriumType GetType() const;
+    void AdvanceGene();
+
 private:
     BacteriumState state;
-    Gene gene; 
-    size_t ID;
-};
-
-class Group{
-public:
-    Group(size_t size);
-
-    Bacterium* GetBacterium(size_t id); //delete bacterium?
-
-    void UpdateNumberAlive(size_t delta);
-    unsigned int GetNumberAlive();
-
-private:
-    std::vector<Bacterium> group;
-    unsigned int alive;
+    Gene gene;
+    size_t ID = 0;
+    BacteriumType type = BacteriumType::PHOTOSYNTHESIZER;
 };
